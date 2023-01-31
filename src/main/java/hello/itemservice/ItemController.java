@@ -37,10 +37,15 @@ public class ItemController {
     //modelAttribute->form으로 요청할때 사용. xxx-form-urlencoded
     public String addItem(@ModelAttribute Item item, Model model){
         Item savedItem = itemRepository.save(item);
-        model.addAttribute("item", item);
+        //modelAttribute는 자동으로 model에 넣어주므로 아래의 코드가 필요없다
+        //model.addAttribute("item", item);
         model.addAttribute("itemId", savedItem.getId());
         model.addAttribute("status", true);
-        return "basic/item";
+        //return "basic/item";
+        return "redirect:/basic/items/" + savedItem.getId();
+        //"redirect:/basic/items/" + item.getId() redirect에서 +item.getId() 처럼 URL에 변수를
+        //더해서 사용하는 것은 URL 인코딩이 안되기 때문에 위험하다. 다음에 설명하는 RedirectAttributes 를
+        //사용하자.
     }
 
     //편집페이지로 이동

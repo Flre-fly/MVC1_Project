@@ -1,13 +1,16 @@
 package hello.itemservice;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+//@Component
+@Repository
+//Component와 동일한 기능을 하지만 가독성같은 것을 위해 Repository로 설정
 //스프링빈으로 등록해서 외부에서 사용할 수 있도록함
 public class ItemRepository {
     private final Map<Long, Item> store = new HashMap();
@@ -30,7 +33,7 @@ public class ItemRepository {
     }
     public void update(Long id, Item item){
         Item origin = store.get(id);
-        origin.update(item.getItemName(), item.getPrice(), item.getPrice());
+        origin.update(item.getItemName(), item.getPrice(), item.getQuantity());
     }
     public void remove(Long id){
         store.remove(id);
