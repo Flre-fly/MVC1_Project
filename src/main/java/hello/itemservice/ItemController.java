@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,18 +32,17 @@ public class ItemController {
     public String add(){
         return "basic/addForm";
     }
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/add")
     //RequestParam -> url에서 데이터를 찾음
     //modelAttribute->form으로 요청할때 사용. xxx-form-urlencoded
-    public String addItem(@ModelAttribute Item item, Model model){
+    public String addItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes){
         Item savedItem = itemRepository.save(item);
         //modelAttribute는 자동으로 model에 넣어주므로 아래의 코드가 필요없다
         //model.addAttribute("item", item);
-        model.addAttribute("itemId", savedItem.getId());
-        model.addAttribute("status", true);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
         //return "basic/item";
-        return "redirect:/basic/items/" + savedItem.getId();
+        return "redirect:/basic/items/{itemId}";
         //"redirect:/basic/items/" + item.getId() redirect에서 +item.getId() 처럼 URL에 변수를
         //더해서 사용하는 것은 URL 인코딩이 안되기 때문에 위험하다. 다음에 설명하는 RedirectAttributes 를
         //사용하자.
